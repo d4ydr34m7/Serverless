@@ -10,9 +10,9 @@ export default function ChatRoom({currentUser, chatWith}) {
     const [formValue, setFormValue] = useState("");
     const sentBy = currentUser.role.toLowerCase() === 'customer' ? currentUser.email : 'restaurant'
     const sentTo = chatWith ? chatWith.email : 'restaurant'
-    console.log(chatWith.email)
+    console.log("ccccccccccccc",sentTo)
     const messagesRef = db.collection("messages");
-    const query = messagesRef.where('sentBy', 'in', [sentBy, sentTo]).orderBy("createdAt").limit(25);
+    const query = messagesRef.where('sentBy', 'in', [sentBy, sentTo]).orderBy('createdAt')
     const [messages] = useCollectionData(query, { idField: "id" });
 
     const dummy = useRef();

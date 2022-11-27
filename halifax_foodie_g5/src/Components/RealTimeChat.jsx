@@ -24,11 +24,14 @@ export default function RealTimeChat({sentBy}) {
 
     async function getCurrentUser() {
         let localStorageCurrentUser = localStorage.getItem('currentUser')
+        console.log("bvyhyv*********",localStorage.getItem('currentUser'));
         if(!localStorageCurrentUser || localStorageCurrentUser === 'null') {
             history.push('/')
             return
         }
-        setCurrentUser(JSON.parse(localStorageCurrentUser));
+        let sang= JSON.parse(localStorageCurrentUser)
+        setCurrentUser(sang);
+        console.log("***********",sang);
 
         if(currentUser?.role.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
