@@ -51,7 +51,7 @@ export class OrderFood extends Component {
       foodId: row["foodId"],
       price: row["price"],
       ingredient: row["ingredient"],
-      userName: localStorage.getItem("user").email,
+      userName: this.state.user.email,
     };
 
     try {

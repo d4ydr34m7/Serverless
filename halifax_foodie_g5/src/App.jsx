@@ -1,5 +1,4 @@
 import React from "react";
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import MainPage from "./Components/MainPage";
 import Order from "./Components/orderFood";
@@ -7,8 +6,6 @@ import FoodReview from "./Components/FoodReview";
 import Recipe from "./Components/uploadRecipe";
 import MultiFactor from "./Components/MultiFac";
 import RealTimeChat from "./Components/RealTimeChat";
-
-// import UserPool from './UserPool'
 
 
 import { withAuthenticator } from "@aws-amplify/ui-react";

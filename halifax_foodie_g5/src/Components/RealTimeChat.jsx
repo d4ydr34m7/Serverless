@@ -1,6 +1,3 @@
-//references
-//https://www.youtube.com/watch?v=zQyrwxMPm88&t=60s
-
 import React, { useEffect, useState } from "react";
 
 import { Auth } from "aws-amplify";

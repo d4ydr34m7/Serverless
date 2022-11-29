@@ -12,23 +12,18 @@ import LexChat from "react-lex";
 
 Amplify.configure(config);
 
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
     <LexChat
-      botName="HalifaxFoodie"
-      IdentityPoolId="us-east-1:1c14fb01-663e-45b0-a5fd-26ad6e14b8cc"
+      botName="NavigationHelp"
+      IdentityPoolId="us-east-1:deaf2ce8-6aef-4d71-b1b3-a64e51675264"
       placeholder="Placeholder text"
       backgroundColor="#FFFFFF"
       height="430px"
       region="us-east-1"
-      headerText="Chat with me"
+      headerText="Need Help?"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
       greeting={
         "Hello, how can I help? You can say things like 'help' to get more info"
@@ -38,7 +33,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

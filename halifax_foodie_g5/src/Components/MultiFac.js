@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import db from "../firebase";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 export default function MFA() {
   const history = useHistory();
 
   const [answer, setanswer] = useState("");
   const [key, setKey] = useState("");
+  const [cipher, setCipher] = useState("");
   const [value, setValue] = useState("");
   const question = "What is Your favorite movie?";
   const [role, setRole] = useState("owner");
@@ -44,6 +46,34 @@ export default function MFA() {
     }
   }, []);
 
+  const generatecipher =  async() => {
+          var u = JSON.parse(localStorage.getItem("user"));
+
+//sign-up third factor
+      var body = {
+        email: u.email,
+        userName: u.username,
+        role: role,
+        key: key,
+        plainText: value,
+      };
+      console.log(body);
+
+      try {
+        let result = await axios.post(
+          "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/ciphersignup",
+
+          JSON.stringify(body),
+          { headers: { "Content-Type": "application/json" } }
+        );
+        console.log(result);
+        setCipher(result.data.body);
+        // history.push("/");
+        // window.location.reload();
+      } catch (error) {
+        console.error(error);
+      }  };
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -72,7 +102,7 @@ export default function MFA() {
 
       //login 3rd factor
       var body = {
-        cipher: value,
+        cipher: cipher,
         username: user.username,
       };
       console.log(body);
@@ -121,8 +151,8 @@ export default function MFA() {
                         localStorage.setItem("IsQuestion", true)
                         localStorage.setItem("Role",role)
 
-                        // history.push("/")
-                        // window.location.reload()
+                        history.push("/")
+                        window.location.reload()
                     })
                     .catch((err) => {
                         console.error("error:", err)
@@ -131,29 +161,7 @@ export default function MFA() {
             )
 
 
-      //sign-up third factor
-      var body = {
-        email: u.email,
-        userName: u.username,
-        role: role,
-        key: key,
-        plainText: value,
-      };
-      console.log(body);
-
-      try {
-        let result = await axios.post(
-          "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/ciphersignup",
-
-          JSON.stringify(body),
-          { headers: { "Content-Type": "application/json" } }
-        );
-        console.log( result);
-        history.push("/");
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-      }
+      
     }
   };
 
@@ -210,12 +218,20 @@ export default function MFA() {
 
                 <div className="mb-5">
                   {setQuestion ? (
-                    <h4>3rd Factor Authentication</h4>
+                    <div><h4>3rd Factor Authentication</h4>
+                    <div className="cus-form form-top-space">
+                    <span>Enter a cipher</span>
+                    <input
+                      className="input-design top-space"
+                      type="text"
+                      value={cipher}
+                      onChange={(e) => setCipher(e.target.value)}
+                      placeholder="Enter cipher"
+                    />
+                  </div></div>
                   ) : (
-                    <h4>Set Up 3rd Factor Authentication</h4>
-                  )}
-
-                  <div className="cus-form form-top-space">
+                    <div><h4>Set Up 3rd Factor Authentication</h4>
+                    <div className="cus-form form-top-space">
                     <span>Enter a key</span>
                     <input
                       className="input-design top-space"
@@ -236,6 +252,14 @@ export default function MFA() {
                       placeholder="Enter Value"
                     />
                   </div>
+                 <Button onClick={generatecipher}>Generate Cipher</Button>
+
+                    <span>{cipher}</span>
+                
+                  </div>
+                  )}
+                
+                  
                 </div>
 
                 <div className="cus-form form-top-space">

@@ -80,13 +80,13 @@ export default function MainPage() {
         </Row>
       </Col>
       <LexChat
-        botName="HalifaxFoodie"
-        IdentityPoolId="us-east-1:1c14fb01-663e-45b0-a5fd-26ad6e14b8cc"
+        botName="NavigationHelp"
+        IdentityPoolId="us-east-1:deaf2ce8-6aef-4d71-b1b3-a64e51675264"
         placeholder="Placeholder text"
         backgroundColor="#FFFFFF"
         height="430px"
         region="us-east-1"
-        headerText="Chat with me"
+        headerText="Need Help?"
         headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
         greeting={
           "Hello, how can I help? You can say things like 'help' to get more info"
