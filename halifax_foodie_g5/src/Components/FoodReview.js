@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Row, Button } from "react-bootstrap";
 import axios from "axios";
+
 export class FoodReview extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       user: JSON.parse(localStorage.getItem("user")),
-      rating: "",
-      foodId: props.location.state.foodId,
+      foodRating: "",
+      itemId: props.location.state.foodId,
     };
   }
   onValueChange = (event) => {
@@ -20,17 +21,17 @@ export class FoodReview extends Component {
 
   saveItem = async (event) => {
     event.preventDefault();
-    const body = {
-      ratings: this.state.rating,
+    const itemBody = {
+      ratings: this.state.foodRating,
       username: this.state.user.username,
-      foodId: this.state.foodId,
+      foodId: this.state.itemId,
     };
 
     try {
       let response = await axios.post(
         "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/rate",
 
-        JSON.stringify(body),
+        JSON.stringify(itemBody),
         { headers: { "Content-Type": "application/json" } }
       );
       console.log(response)
@@ -41,8 +42,9 @@ export class FoodReview extends Component {
   };
 
   cancel = (e) => {
-    this.props.history.push("/order");
+    this.props.history.push("/orderFood");
   };
+  
   render() {
     return (
       <Row className="rating-content">
@@ -53,8 +55,8 @@ export class FoodReview extends Component {
           <input
             type="text"
             palceholder="Add task"
-            name="rating"
-            value={this.state.rating}
+            name="foodRating"
+            value={this.state.foodRating}
             onChange={this.onValueChange}
           />
         </div>

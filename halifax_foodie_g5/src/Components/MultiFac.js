@@ -8,62 +8,64 @@ import { Button } from "@mui/material";
 export default function MFA() {
   const history = useHistory();
 
-  const [answer, setanswer] = useState("");
-  const [key, setKey] = useState("");
-  const [cipher, setCipher] = useState("");
+  const [secondFactorAns, setAns] = useState("");
+  const [thirdFacKey, setKey] = useState("");
+  const [thirdFacCipher, setCipher] = useState("");
   const [value, setValue] = useState("");
-  const question = "What is Your favorite movie?";
-  const [role, setRole] = useState("owner");
-  const [setQuestion, setsetQuestion] = useState();
-  var dbUser;
+  const questionForSecondFactor = "What is Your favorite movie?";
+  const [registeredRole, setRegisteredRole] = useState("owner");
+  const [secondFactorQues, setQues] = useState();
+  var databaseUser;
+
+  
   useEffect(async () => {
-    let dbUser;
+    let databaseUser;
 
     !JSON.parse(localStorage.getItem("IsQuestion")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
-        const user = {
+        const dbUser = {
           username: obj.username,
           email: obj.attributes.email,
         };
-        console.log(user)
-        localStorage.setItem("user", JSON.stringify(user));
+        console.log(dbUser)
+        localStorage.setItem("user", JSON.stringify(dbUser));
         localStorage.setItem("IsQuestion", false);
       }));
 
     const user = JSON.parse(localStorage.getItem("user"));
     const users = await db.collection("users");
-    const userData = await users.where("username", "==", user.username).get();
+    const dataFromUser = await users.where("username", "==", user.username).get();
 
-    userData.forEach((doc) => {
-      dbUser = doc.data();
+    dataFromUser.forEach((doc) => {
+      databaseUser = doc.data();
     });
-    console.log("dbUser",dbUser);
+    console.log("dbUser",databaseUser);
 
-    if (dbUser) {
-      setsetQuestion(true);
+    if (databaseUser) {
+      setQues(true);
     } else {
-      setsetQuestion(false);
+      setQues(false);
     }
   }, []);
 
-  const generatecipher =  async() => {
+  const getCipherText =  async() => {
           var u = JSON.parse(localStorage.getItem("user"));
 
 //sign-up third factor
-      var body = {
+      var tfBody = {
         email: u.email,
         userName: u.username,
-        role: role,
-        key: key,
+        role: registeredRole,
+        key: thirdFacKey,
         plainText: value,
       };
-      console.log(body);
+      console.log(tfBody);
 
       try {
         let result = await axios.post(
           "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/ciphersignup",
 
-          JSON.stringify(body),
+          JSON.stringify(tfBody),
           { headers: { "Content-Type": "application/json" } }
         );
         console.log(result);
@@ -77,22 +79,22 @@ export default function MFA() {
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
-    console.log(setQuestion);
-    if (setQuestion) {
+    console.log(secondFactorQues);
+    if (secondFactorQues) {
       const user = JSON.parse(localStorage.getItem("user"));
-      dbUser = {};
+      databaseUser = {};
 
       const users = await db.collection("users");
-      const userData = await users.where("username", "==", user.username).get();
+      const dataFromUser = await users.where("username", "==", user.username).get();
 
-      userData.forEach((doc) => {
-        dbUser = doc.data();
+      dataFromUser.forEach((doc) => {
+        databaseUser = doc.data();
       });
 
-      if (dbUser.answer) {
-        if (answer === dbUser?.answer) {
+      if (databaseUser.answer) {
+        if (secondFactorAns === databaseUser?.answer) {
           localStorage.setItem("IsQuestion", true);
-          localStorage.setItem("Role", dbUser.role);
+          localStorage.setItem("Role", databaseUser.role);
           // history.push("/");
           // window.location.reload();
         } else {
@@ -101,11 +103,11 @@ export default function MFA() {
       }
 
       //login 3rd factor
-      var body = {
-        cipher: cipher,
+      var tfLoginBody = {
+        cipher: thirdFacCipher,
         username: user.username,
       };
-      console.log(body);
+      console.log(tfLoginBody);
 
       await axios
         .post(
@@ -118,7 +120,7 @@ export default function MFA() {
               "Content-Type": "application/json",
             },
             crossDomain: true,
-            body: JSON.stringify(body),
+            body: JSON.stringify(tfLoginBody),
           }
         )
         .then((response) => {
@@ -131,17 +133,17 @@ export default function MFA() {
           console.log("error", err);
         });
     } else {
-      var u = JSON.parse(localStorage.getItem("user"));
+      var userExp = JSON.parse(localStorage.getItem("user"));
 
       // 2nd factor
       await Auth.currentAuthenticatedUser().then((obj) => {
 
                 const user = {
-                    username: u.username,
-                    question: question,
-                    answer: answer,
-                    role: role,
-                    email:u.email
+                    username: userExp.username,
+                    question: questionForSecondFactor,
+                    answer: secondFactorAns,
+                    role: registeredRole,
+                    email:userExp.email
                 }
 
                 console.log("user:", user)
@@ -149,7 +151,7 @@ export default function MFA() {
                     .then((doc) => {
                         console.log("data Submitted Successfully.")
                         localStorage.setItem("IsQuestion", true)
-                        localStorage.setItem("Role",role)
+                        localStorage.setItem("Role",registeredRole)
 
                         history.push("/")
                         window.location.reload()
@@ -173,7 +175,7 @@ export default function MFA() {
             <div className="main-box">
               <form onSubmit={(e) => onSubmitForm(e)}>
                 <div className="mb-5">
-                  {setQuestion ? (
+                  {secondFactorQues ? (
                     <div></div>
                   ) : (
                     <div>
@@ -185,8 +187,8 @@ export default function MFA() {
                         <input
                           className="input-design top-space"
                           type="text"
-                          value={role}
-                          onChange={(e) => setRole(e.target.value)}
+                          value={registeredRole}
+                          onChange={(e) => setRegisteredRole(e.target.value)}
                           placeholder="Customer"
                         />
                       </div>
@@ -196,7 +198,7 @@ export default function MFA() {
 
                 <div></div>
                 <div className="mb-5">
-                  {setQuestion ? (
+                  {secondFactorQues ? (
                     <h4>2nd Factor Authentication</h4>
                   ) : (
                     <h4>Set up 2nd Factor Authentication</h4>
@@ -207,8 +209,8 @@ export default function MFA() {
                     <input
                       className="input-design top-space"
                       type="text"
-                      value={answer}
-                      onChange={(e) => setanswer(e.target.value)}
+                      value={secondFactorAns}
+                      onChange={(e) => setAns(e.target.value)}
                       placeholder="Your Answer"
                     />
                   </div>
@@ -217,14 +219,14 @@ export default function MFA() {
                 <div></div>
 
                 <div className="mb-5">
-                  {setQuestion ? (
+                  {secondFactorQues ? (
                     <div><h4>3rd Factor Authentication</h4>
                     <div className="cus-form form-top-space">
                     <span>Enter a cipher</span>
                     <input
                       className="input-design top-space"
                       type="text"
-                      value={cipher}
+                      value={thirdFacCipher}
                       onChange={(e) => setCipher(e.target.value)}
                       placeholder="Enter cipher"
                     />
@@ -236,7 +238,7 @@ export default function MFA() {
                     <input
                       className="input-design top-space"
                       type="text"
-                      value={key}
+                      value={thirdFacKey}
                       onChange={(e) => setKey(e.target.value)}
                       placeholder="Enter key"
                     />
@@ -252,9 +254,9 @@ export default function MFA() {
                       placeholder="Enter Value"
                     />
                   </div>
-                 <Button onClick={generatecipher}>Generate Cipher</Button>
+                 <Button onClick={getCipherText}>Generate Cipher</Button>
 
-                    <span>{cipher}</span>
+                    <span>{thirdFacCipher}</span>
                 
                   </div>
                   )}

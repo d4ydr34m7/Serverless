@@ -8,7 +8,7 @@ import {useHistory} from 'react-router-dom'
 
 import { CardContent, Card, Typography, Grid, CardHeader } from "@mui/material";
 
-export default function RealTimeChat({sentBy}) {
+export default function ChatMod({sentBy}) {
     const [currentUser, setCurrentUser] = useState(null)
     const [customerList, setCustomerList] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)

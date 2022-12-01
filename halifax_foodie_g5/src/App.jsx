@@ -1,13 +1,10 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import MainPage from "./Components/MainPage";
-import Order from "./Components/orderFood";
+import Order from "./Components/FoodItem";
 import FoodReview from "./Components/FoodReview";
-import Recipe from "./Components/uploadRecipe";
 import MultiFactor from "./Components/MultiFac";
-import RealTimeChat from "./Components/RealTimeChat";
-
-
+import ChatMod from "./Components/ChatMod";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import "../src/baseClass.css";
 import './App.css'
@@ -35,9 +32,8 @@ function App() {
             <Route exact path="/" component={MainPage} />
             <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={FoodReview} />
-            <Route exact path="/order" component={Order} />
-            <Route exact path="/chat" component={RealTimeChat} />
-            <Route exact path="/recipeupload" component={Recipe} />
+            <Route exact path="/orderFood" component={Order} />
+            <Route exact path="/chatRoom" component={ChatMod} />
 
           </Switch>
         </Router>

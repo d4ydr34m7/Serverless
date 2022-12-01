@@ -5,17 +5,14 @@ import { Card } from "react-bootstrap";
 import { useLocation } from "react-router";
 import { useState } from "react";
 import axios from "axios";
-import "./orderlayout.css";
+import "./foodItem.css";
 
 export class OrderFood extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: JSON.parse(localStorage.getItem("user")),
-      food: [],
-      heading: "",
-      title: "",
-      ingredient: "",
+      items: [],
     };
   }
 
@@ -41,16 +38,15 @@ export class OrderFood extends Component {
       .then((response) => {
         response = JSON.parse(response.data.body);
         this.setState({
-          food: response[0].food,
+          items: response[0].food,
         });
       });
   }
   async orderitem(row) {
-    const body = {
+    const itemBody = {
       foodName: row["foodName"],
       foodId: row["foodId"],
       price: row["price"],
-      ingredient: row["ingredient"],
       userName: this.state.user.email,
     };
 
@@ -58,24 +54,19 @@ export class OrderFood extends Component {
       let result = await axios.post(
         "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/addorder",
 
-        JSON.stringify(body),
+        JSON.stringify(itemBody),
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("op", result);
+      console.log("re", result);
+      
       alert("Ordered " + row["foodName"] + " Successfully");
-      this.props.history.push("/giveratings", { foodId: body.foodId });
+      this.props.history.push("/giveratings", { foodId: itemBody.foodId });
     } catch (error) {
       console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
   }
 
-  async exportRecipe(row) {
-    this.setState({
-      heading: "Extracted Title and Key Ingredients",
-      title: "Title:" + row.foodName,
-      ingredient: "Ingredients:" + row.ingredient,
-    });
-  }
+
 
   render() {
     return (
@@ -84,15 +75,13 @@ export class OrderFood extends Component {
           <Col md={12} lg={6}>
             <div>
               <h3>Order Your Food</h3>
-              {this.state.food.map((row) => (
+              {this.state.items.map((row) => (
                 <Card className="card-content-incomplete">
                   <Row className="card-item">
                     <Col xs={3} md={5} className="card-item-content">
                       <Card.Body>
                         <Card.Title>Food: {row.foodName}</Card.Title>
                         <Card.Title>Price: ${row.price}</Card.Title>
-                        {/* <Card.Title>Ingredients: {row.ingredient}</Card.Title> */}
-                        {/* <Card.Title>{this.state.ingredient}</Card.Title> */}
                       </Card.Body>
                     </Col>
                     <Col xs={3} md={5} className="card-item-content">
@@ -103,30 +92,10 @@ export class OrderFood extends Component {
                         Place Order
                       </Button>
                       <div></div>
-                      <Button onClick={() => this.exportRecipe(row)}>
-                        Extract ingredients
-                      </Button>
                     </Col>
                   </Row>
                 </Card>
               ))}
-            </div>
-          </Col>
-
-          <Col md={12} lg={6}>
-            <div className="card-item-content">
-              <h4>{this.state.heading}</h4>
-
-              <Row className="card-item">
-                <Col xs={3} md={7} className="card-item-content">
-                  <Card.Body>
-                    <Card.Title>{this.state.heading}</Card.Title>
-                    <Card.Title>{this.state.title}</Card.Title>
-                    <Card.Title>{this.state.ingredient}</Card.Title>
-                  </Card.Body>
-                </Col>
-                <Col xs={3} md={3} className="card-item-content"></Col>
-              </Row>
             </div>
           </Col>
         </Row>

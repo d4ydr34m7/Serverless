@@ -1,54 +1,65 @@
 import React, {useEffect} from "react";
 import { useHistory } from "react-router-dom";
-import { Col, Row, Button } from "react-bootstrap";
-import LexChat from "react-lex";
 import { useState } from "react";
 import {Auth} from 'aws-amplify';
+import LexChat from "react-lex";
+import { Col, Row, Button } from "react-bootstrap";
 
 
 export default function MainPage() {
-  const role = localStorage.getItem("Role");
-  const history = useHistory();
-  const [currentUser,setCurrentUser] = useState(null)
+  let [loggedInUser,setLoggedInUser] = useState(null)           //const
+  const getLoggedInUserRole = localStorage.getItem("Role");
+  let navigate = useHistory();
+
 
   useEffect(() => {
-      getCurrentUser()
+      getLoggedInUser()
   }, [])
 
-  async function getCurrentUser() {
+  let uploadRecipe = () => {
+    navigate.push("/uploadRecipe");
+  };
+
+  let orderFood = () => {
+    navigate.push("/orderFood");                          
+  };
+
+
+  let chatRoom = () => {
+    navigate.push("/chatRoom");
+  };
+ 
+  let visualization = () => {
+    navigate.push("/visualize");
+  };
+
+
+ async function getLoggedInUser() {
       try {
-          const user = await Auth.currentAuthenticatedUser({
+          let getUser = await Auth.currentAuthenticatedUser({
               bypassCache: false
           })
-          setCurrentUser({...user.attributes, role: user.storage?.getItem('Role')});
-          localStorage.setItem('currentUser', JSON.stringify({...user.attributes, role: user.storage?.getItem('Role')}))
+          setLoggedInUser({...getUser.attributes, role: getUser.storage?.getItem('Role')});
+          localStorage.setItem('currentUser', JSON.stringify({...getUser.attributes, role: getUser.storage?.getItem('Role')}))
       } catch(error) {
-          history.push('/')
+          navigate.push('/')
       }
   }
-  const orderitem = () => {
-    history.push("/order");
-  };
-  const recipeUpload = () => {
-    history.push("/recipeupload");
-  };
-  const visual = () => {
-    history.push("/visualization");
-  };
-  const logout = () => {
+
+  let logOut = () => {
     localStorage.clear();
     window.location.reload();
-    history.push("/");
+    navigate.push("/");
   };
-  const chat = () => {
-    history.push("/chat");
-  };
+
+
+  
   return (
     <div className="p-5">
       <Col className="card-item-content"> 
         <Row className="card-item">
-          {role.toLowerCase() == "customer" ? (
-            <Button className="add-button" onClick={() => orderitem()}>
+          {getLoggedInUserRole.toLowerCase() == "customer" ? (
+            <Button className="add-button" onClick={() => orderFood()}>
               Order Food
             </Button>
           ) : (<div></div>
@@ -56,42 +67,30 @@ export default function MainPage() {
         </Row>
         
         <Row className="card-item">
-          <Button className="add-button" onClick={() => visual()}>
+          <Button className="add-button" onClick={() => visualization()}>
             Visualization
           </Button>
         </Row>
         <Row className="card-item">
-          {role.toLowerCase() == "customer" ? (<div></div>
+          {getLoggedInUserRole.toLowerCase() == "customer" ? (<div></div>
           ) : (
-            <Button className="add-button" onClick={() => recipeUpload()}>
+            <Button className="add-button" onClick={() => uploadRecipe()}>
               Recipe Upload
             </Button>
           )}
         </Row>
         <Row className="card-item">
-          <Button className="add-button" onClick={() => logout()}>
+          <Button className="add-button" onClick={() => logOut()}>
             Logout
           </Button>
         </Row>
         <Row className="card-item">
-          <Button className="add-button" onClick={() => chat()}>
+          <Button className="add-button" onClick={() => chatRoom()}>
             Chat
           </Button>
         </Row>
       </Col>
-      <LexChat
-        botName="NavigationHelp"
-        IdentityPoolId="us-east-1:deaf2ce8-6aef-4d71-b1b3-a64e51675264"
-        placeholder="Placeholder text"
-        backgroundColor="#FFFFFF"
-        height="430px"
-        region="us-east-1"
-        headerText="Need Help?"
-        headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
-        greeting={
-          "Hello, how can I help? You can say things like 'help' to get more info"
-        }
-      />
+      
     </div>
    
   );
