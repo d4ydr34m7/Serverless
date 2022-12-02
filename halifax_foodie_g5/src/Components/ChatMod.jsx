@@ -23,6 +23,7 @@ export default function ChatMod({sentBy}) {
         let localStorageCurrentUser = localStorage.getItem('currentUser')
         console.log("bvyhyv*********",localStorage.getItem('currentUser'));
         if(!localStorageCurrentUser || localStorageCurrentUser === 'null') {
+            // navigate('/')
             history.push('/')
             return
         }
