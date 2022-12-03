@@ -8,8 +8,8 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 
 
-
 export class OrderFood extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +18,7 @@ export class OrderFood extends Component {
       items: [],
     };
   }
+
 
   async componentDidMount() {
     // var body = {
@@ -70,7 +71,6 @@ export class OrderFood extends Component {
       console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
   }
-
 
 
   render() {

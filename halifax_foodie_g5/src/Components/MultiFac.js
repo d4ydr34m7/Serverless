@@ -174,7 +174,7 @@ export default function MFA() {
                           navigate.push("/restaurantHome")
                         }
                         else
-                        {
+                        { 
                           navigate.push("/customerHome")
                         }
                         // navigate.push("/")

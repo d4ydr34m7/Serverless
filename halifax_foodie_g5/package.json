@@ -3,31 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
     "@aws-amplify/ui-react": "^3.6.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@google-cloud/pubsub": "^2.16.1",
     "@mui/material": "^5.8.3",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^5.0.4",
     "aws-amplify": "^4.3.43",
+    "aws-sdk": "^2.1267.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.2",
     "firebase": "^8.8.0",
     "postcss": "^8.4.19",
+    "react": "^18.2.0",
     "react-bootstrap": "^1.6.1",
+    "react-dom": "^18.2.0",
     "react-firebase-hooks": "^2.2.0",
     "react-lex": "^1.2.1",
     "react-lex-plus": "^1.2.3",
     "react-router-dom": "^5.2.0",
+    "react-scripts": "5.0.1",
     "reactstrap": "^8.9.0",
-    "sass": "^1.56.1"
+    "sass": "^1.56.1",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,6 +42,9 @@
       "react-app/jest"
     ]
   },
+  "browser":{
+    "child_process": false
+    },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -60,5 +64,5 @@
     "webpack-dev-server": "^4.11.1",
     "webpack-hot-client": "^4.2.0",
     "webpack-hot-middleware": "^2.25.3"
-  }
+  } 
 }

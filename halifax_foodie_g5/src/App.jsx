@@ -8,6 +8,12 @@ import ChatMod from "./Components/ChatMod";
 import RestaurantHome from "./Components/RestaurantHome";
 import CustomerHome from "./Components/CustomerHome";
 import { withAuthenticator } from "@aws-amplify/ui-react";
+import Feedback from "./Components/Feedback";
+import UploadRecipe from "./Components/UploadRecipe";
+import RestaurantRecipes from "./Components/RestaurantRecipes";
+import ViewRecipesCustomer from "./Components/ViewRecipesCustomer";
+import GiveFeedback from "./Components/GiveFeedback";
+import OrderFood from "./Components/OrderFood";
 import "../src/baseClass.css";
 import './App.css'
 
@@ -38,8 +44,14 @@ function App() {
             
             <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={FoodReview} />
-            <Route exact path="/orderFood" component={Order} />
+            <Route exact path="/orderFood" component={OrderFood} />
             <Route exact path="/chatRoom" component={ChatMod} />
+            <Route exact path="/feedback" component={Feedback} />
+            <Route exact path="/uploadRecipe" component={UploadRecipe} />
+            <Route exact path="/ourRecipes" component={RestaurantRecipes} />
+            <Route exact path="/viewRecipes" component={ViewRecipesCustomer} />
+            <Route exact path="/giveFeedback" component={GiveFeedback} />
+
             {/* <Route exact path="/customerHome" component={CustomerHome} />
             <Route exact path="/restaurantHome" component={RestaurantHome} /> */}
           </Switch>

@@ -16,13 +16,7 @@ function CustomerHome()
     getLoggedInUser()
     if(localStorage.getItem("IsQuestion") && localStorage.getItem("Role") == "customer")
     {
-      // if(localStorage.getItem("Role") != "customer" || localStorage.getItem("Role") == "owner")
-      // {
-      //   navigate.push("/restaurantHome")
-      // }
-      // else
-      // {
-        const fetchRestaurant = async()  =>{
+        const fetchRestaurant = async()  => {
           await fetch("https://rcwj3zngybl7o3oa24yyxhtyiu0pdqaz.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
@@ -39,7 +33,6 @@ function CustomerHome()
           })
           }
           fetchRestaurant();
-      // }
     }
     else
     {
@@ -77,7 +70,9 @@ function CustomerHome()
                 <th>Restaurant Id</th>
                 <th>Contact</th>
                 <th>Address</th>
+                <th>Ratings(5) </th>
                 <th>View Food items</th>
+                <th>Give Feedback</th>
             </tr>
             {listOfRestaurants.map((restaurants) => {
               return (
@@ -86,7 +81,9 @@ function CustomerHome()
                   <td>{restaurants.restaurantId}</td>
                   <td>{restaurants.restaurantContact}</td>
                   <td>{restaurants.restaurantAddress}</td>
-                  <td><button onClick={() => navigate.push('/RestaurantRecipe', { state : {restaurantId : restaurants.restaurantId} }) }> View Recipes</button></td>
+                  <td>4.5</td>
+                  <td><button onClick={() => navigate.push('/viewRecipes', {restaurantId : restaurants.restaurantId} ) }> View Recipes</button></td>
+                  <td><button onClick={() => navigate.push('/giveFeedback', {restaurantId : restaurants.restaurantId} ) }> Give Feedback</button></td>
                 </tr>
                 )})}
         </table>

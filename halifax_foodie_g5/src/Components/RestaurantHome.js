@@ -51,7 +51,7 @@ function RestaurantHome() {
         <div>
             <button onClick={() => navigate.push('/uploadRecipe', { state : {restaurantID : restaurantId} }) }> Upload Recipe</button>
             <button onClick={() => navigate.push('/feedback', { state : {restaurantID : restaurantId} }) }> Get Feedback</button>
-            <button onClick={() => navigate.push('/RestaurantRecipes', { state : {restaurantID : restaurantId} }) }>Our Recipes</button>
+            <button onClick={() => navigate.push('/ourRecipes', { state : {restaurantID : restaurantId} }) }>Our Recipes</button>
             <button onClick={() => logOut() }>Log Out</button>
         </div>
     </div>
