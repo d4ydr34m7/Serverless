@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { Container, Col, Row, Button } from "react-bootstrap";
-import { Card } from "react-bootstrap";
 import { useLocation } from "react-router";
 import { useState } from "react";
 import axios from "axios";
 import "./foodItem.css";
+import { Container, Col, Row, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+
+
 
 export class OrderFood extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //https://blog.logrocket.com/localstorage-javascript-complete-guide/
       user: JSON.parse(localStorage.getItem("user")),
       items: [],
     };
@@ -42,6 +45,8 @@ export class OrderFood extends Component {
         });
       });
   }
+
+  //https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   async orderitem(row) {
     const itemBody = {
       foodName: row["foodName"],
@@ -75,6 +80,7 @@ export class OrderFood extends Component {
           <Col md={12} lg={6}>
             <div>
               <h3>Order Your Food</h3>
+              {/* https://react-bootstrap.github.io/components/cards/ */}
               {this.state.items.map((row) => (
                 <Card className="card-content-incomplete">
                   <Row className="card-item">
@@ -89,7 +95,7 @@ export class OrderFood extends Component {
                         className="add-button"
                         onClick={() => this.orderitem(row)}
                       >
-                        Place Order
+                        Place your Order
                       </Button>
                       <div></div>
                     </Col>

@@ -1,77 +1,64 @@
 import React, { useEffect, useState } from "react";
-
-import { Auth } from "aws-amplify";
-import ChatRoom from "./ChatRoom";
-import './RealTimeChat.scss'
-import db from '../firebase'
 import {useHistory} from 'react-router-dom'
+import db from '../firebase'
+//import { Auth } from "aws-amplify";
+import CreateRoom from "./CreateRoom";
+import './ChatMod.scss'
 
 import { CardContent, Card, Typography, Grid, CardHeader } from "@mui/material";
 
+//https://reactjs.org/docs/hooks-state.html
 export default function ChatMod({sentBy}) {
-    const [currentUser, setCurrentUser] = useState(null)
-    const [customerList, setCustomerList] = useState([])
-    const [selectedCustomer, setSelectedCustomer] = useState(null)
-    // const navigate = useNavigate()
-    const history = useHistory();
+    var [listCust, setCustList] = useState([])
+    var [loggedInUser, setLoggedInUser] = useState(null)
+    var [chosenCust, setChosenCust] = useState(null)
 
+//https://reactjs.org/docs/hooks-effect.html
     useEffect(() => {
-        getCurrentUser()
+        getLoggedInUser()
     }, [])
 
-    async function getCurrentUser() {
-        let localStorageCurrentUser = localStorage.getItem('currentUser')
+    let hist = useHistory();
+    
+//https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
+    async function getLoggedInUser() {
+        //https://www.w3schools.com/jsref/met_storage_setitem.asp
+        let loggedInUserFromLS = localStorage.getItem('currentUser')
         console.log("bvyhyv*********",localStorage.getItem('currentUser'));
-        if(!localStorageCurrentUser || localStorageCurrentUser === 'null') {
-            history.push('/')
+        if(!loggedInUserFromLS || loggedInUserFromLS === 'null') {
+            hist.push('/')
             return
         }
-        let sang= JSON.parse(localStorageCurrentUser)
-        setCurrentUser(sang);
+
+
+        //https://www.w3schools.com/js/js_json_parse.asp
+        var sang= JSON.parse(loggedInUserFromLS)
+        setLoggedInUser(sang);
         console.log("***********",sang);
 
-        if(currentUser?.role.toLowerCase() !== 'customer') {
-            const users = await db.collection("users");
-            const userData = await users.where("role", "==", 'customer').get();
-            console.log(userData);
-            const customerData = []
-            userData.forEach((doc) => {
-                customerData.push(doc.data())
+        if(loggedInUser?.role.toLowerCase() !== 'customer') {
+            let users = await db.collection("users");
+            let dataFromUser = await users.where("role", "==", 'customer').get();
+            console.log(dataFromUser);
+            var custData = []
+            dataFromUser.forEach((doc) => {
+                custData.push(doc.data())
             });
-            console.log(customerData)
-            setCustomerList(customerData)
+            console.log(custData)
+            setCustList(custData)
         }
     }
 
-    function SingleCustomer(props) {
+  
+    function GetListOfCust(props) {
         return (
-            <Card style={{marginBottom: '1rem', cursor: 'pointer'}}>
-                <CardContent>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        {props.customer.email}
-                    </Typography>
-                </CardContent>
-            </Card>
-        )
-    }
-
-    function getCardHeading() {
-        return 'Chat'
-    }
-
-    function selectCustomerToChatWith(customer) {
-        setSelectedCustomer(customer)
-    }
-
-    function CustomersList(props) {
-        return (
-            <div className="customers-list">
+            <div>
                 {
                     props.customerList
                     && props.customerList.length
                     && props.customerList.map((customer, index) =>
-                        <div key={index} onClick={(e) => selectCustomerToChatWith(customer)}>
-                            <SingleCustomer customer={customer}/>
+                        <div key={index} onClick={(e) => getToChat(customer)}>
+                            <FetchCust customer={customer}/>
                         </div>
                     )
                 }
@@ -80,7 +67,7 @@ export default function ChatMod({sentBy}) {
                     props.customerList
                     && !props.customerList.length
                     &&
-                    <h1 style={{color: 'white', padding: '1rem'}}>
+                    <h1 style={{color: 'grey'}}>
                         No Customers !!!
                     </h1>
                 }
@@ -88,30 +75,57 @@ export default function ChatMod({sentBy}) {
         )
     }
 
+    //https://react-bootstrap.github.io/components/cards/
+    function FetchCust(props) {
+        return (
+            <Card style={{marginBottom: '2rem'}}>
+                <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+                        {props.customer.email}
+                    </Typography>
+                </CardContent>
+            </Card>
+        )
+    }
+
+   
+
+    
+    function title() {
+        return <h2>Happy to help!</h2>
+    }
+
+    function getToChat(customer) {
+        setChosenCust(customer)
+    }
+
+    // https://mui.com/material-ui/react-grid/
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center" height={'100%'}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center" height={'90%'}>
             <Grid item={true} xs={2} sm={4} md={4}  className="chat-container">
                 <Card variant="outlined">
-                    <CardHeader style={{borderBottom: '1px solid lightgray'}} title={getCardHeading()}/>
+                    <CardHeader style={{borderBottom: '1px solid lightgray'}} title={title()}/>
                     <CardContent>
-                        {
-                            currentUser && currentUser.role.toLowerCase() === 'customer' && <ChatRoom currentUser={currentUser}/>
-                        }
 
-                        {
-                            currentUser && currentUser.role.toLowerCase() !== 'customer' && selectedCustomer && <ChatRoom currentUser={currentUser} chatWith={selectedCustomer} />
-                        }
-
-                        {
-                            currentUser && currentUser.role.toLowerCase() !== 'customer' && !selectedCustomer && <CustomersList customerList={customerList}/>
-                        }
-
-                        {
-                            !currentUser &&
-                            <h1 style={{color: 'white', padding: '1rem'}}>
-                                Loading !!!!!!
+                         {
+                            !loggedInUser &&
+                            <h1 style={{color: 'white', padding: '2rem'}}>
+                                Customer List to be displayed ....
                             </h1>
                         }
+                        {
+                            loggedInUser && loggedInUser.role.toLowerCase() === 'customer' && <CreateRoom currentUser={loggedInUser}/>
+                        }
+
+                        {
+                            loggedInUser && loggedInUser.role.toLowerCase() !== 'customer' && chosenCust && <CreateRoom currentUser={loggedInUser} chatWith={chosenCust} />
+                        }
+
+                        {
+                            loggedInUser && loggedInUser.role.toLowerCase() !== 'customer' && !chosenCust && <GetListOfCust customerList= {listCust}/>
+                        }
+
+                       
                     </CardContent>
                 </Card>
             </Grid>

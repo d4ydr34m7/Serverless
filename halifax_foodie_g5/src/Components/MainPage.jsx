@@ -1,20 +1,60 @@
 import React, {useEffect} from "react";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import {Auth} from 'aws-amplify';
 import LexChat from "react-lex";
 import { Col, Row, Button } from "react-bootstrap";
 
-
+//https://reactjs.org/docs/hooks-state.html
 export default function MainPage() {
   let [loggedInUser,setLoggedInUser] = useState(null)           //const
   const getLoggedInUserRole = localStorage.getItem("Role");
   let navigate = useHistory();
 
-
+//https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
       getLoggedInUser()
   }, [])
+
+
+// useEffect(() => {
+
+//     let timeInt = setInterval(() => {
+
+//       flagChk();
+
+//     }, 15000);
+
+//     return () => clearInterval(timeInt);
+
+//   },[]);
+
+
+//https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
+  async function flagChk() {
+    await axios
+    .post(
+      "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/getflag",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      var chck=JSON.parse(response.data.body)
+      if(chck!="false")
+      {
+        navigate.push("/chatRoom");
+        window.location.reload();
+      }
+
+    });    
+
+  }
+
+
 
   let uploadRecipe = () => {
     navigate.push("/uploadRecipe");
@@ -33,7 +73,7 @@ export default function MainPage() {
     navigate.push("/visualize");
   };
 
-
+//https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
  async function getLoggedInUser() {
       try {
           let getUser = await Auth.currentAuthenticatedUser({

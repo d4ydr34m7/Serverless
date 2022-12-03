@@ -1,23 +1,28 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
-import db from "../firebase";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
+import db from "../firebase";
 
+// /https://reactjs.org/docs/hooks-state.html
 export default function MFA() {
-  const history = useHistory();
+  let navigate = useHistory();
 
-  const [secondFactorAns, setAns] = useState("");
-  const [thirdFacKey, setKey] = useState("");
-  const [thirdFacCipher, setCipher] = useState("");
-  const [value, setValue] = useState("");
-  const questionForSecondFactor = "What is Your favorite movie?";
-  const [registeredRole, setRegisteredRole] = useState("owner");
-  const [secondFactorQues, setQues] = useState();
-  var databaseUser;
+  let [registeredRole, setRegisteredRole] = useState("owner");
 
-  
+  let [secondFactorAns, setAns] = useState("");
+  let [secondFactorQues, setQues] = useState();
+  let questionForSecondFactor = "What is Your favorite movie?";
+
+  let [thirdFacKey, setKey] = useState("");
+  let [value, setValue] = useState("");
+  let [thirdFacCipher, setCipher] = useState("");
+
+  let databaseUser;
+
+//https://reactjs.org/docs/hooks-effect.html
+//https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(async () => {
     let databaseUser;
 
@@ -27,11 +32,12 @@ export default function MFA() {
           username: obj.username,
           email: obj.attributes.email,
         };
-        console.log(dbUser)
+        console.log(dbUser, "**********")
         localStorage.setItem("user", JSON.stringify(dbUser));
         localStorage.setItem("IsQuestion", false);
       }));
 
+      //https://blog.logrocket.com/localstorage-javascript-complete-guide/
     const user = JSON.parse(localStorage.getItem("user"));
     const users = await db.collection("users");
     const dataFromUser = await users.where("username", "==", user.username).get();
@@ -76,11 +82,13 @@ export default function MFA() {
         console.error(error);
       }  };
 
+  //https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
     console.log(secondFactorQues);
     if (secondFactorQues) {
+      //https://blog.logrocket.com/localstorage-javascript-complete-guide/
       const user = JSON.parse(localStorage.getItem("user"));
       databaseUser = {};
 
@@ -125,7 +133,7 @@ export default function MFA() {
         )
         .then((response) => {
           console.log(response);
-          history.push("/");
+          navigate.push("/");
           window.location.reload();
         })
         .catch((err) => {
@@ -153,7 +161,7 @@ export default function MFA() {
                         localStorage.setItem("IsQuestion", true)
                         localStorage.setItem("Role",registeredRole)
 
-                        history.push("/")
+                        navigate.push("/")
                         window.location.reload()
                     })
                     .catch((err) => {
@@ -180,10 +188,10 @@ export default function MFA() {
                   ) : (
                     <div>
                       <div>
-                        <h4> Enter Role</h4>
+                        <h4> Enter your Role</h4>
                       </div>
                       <div>
-                        <span>Please enter your role here</span>
+                        <span>Enter your role</span>
                         <input
                           className="input-design top-space"
                           type="text"
@@ -199,19 +207,19 @@ export default function MFA() {
                 <div></div>
                 <div className="mb-5">
                   {secondFactorQues ? (
-                    <h4>2nd Factor Authentication</h4>
+                    <h4>Second Factor</h4>
                   ) : (
-                    <h4>Set up 2nd Factor Authentication</h4>
+                    <h4>Second Factor Auth setup</h4>
                   )}
 
                   <div className="cus-form form-top-space">
-                    <span>What is Your favorite color?</span>
+                    <span>What is Your favorite movie?</span>
                     <input
                       className="input-design top-space"
                       type="text"
                       value={secondFactorAns}
                       onChange={(e) => setAns(e.target.value)}
-                      placeholder="Your Answer"
+                      placeholder="Answer"
                     />
                   </div>
                 </div>
@@ -220,9 +228,9 @@ export default function MFA() {
 
                 <div className="mb-5">
                   {secondFactorQues ? (
-                    <div><h4>3rd Factor Authentication</h4>
+                    <div><h4>Third Factor</h4>
                     <div className="cus-form form-top-space">
-                    <span>Enter a cipher</span>
+                    <span>Enter cipher: </span>
                     <input
                       className="input-design top-space"
                       type="text"
@@ -232,26 +240,26 @@ export default function MFA() {
                     />
                   </div></div>
                   ) : (
-                    <div><h4>Set Up 3rd Factor Authentication</h4>
+                    <div><h4>Third Factor Auth setup</h4>
                     <div className="cus-form form-top-space">
-                    <span>Enter a key</span>
+                    <span>Enter key: </span>
                     <input
                       className="input-design top-space"
                       type="text"
                       value={thirdFacKey}
                       onChange={(e) => setKey(e.target.value)}
-                      placeholder="Enter key"
+                      placeholder="Enter your key"
                     />
                   </div>
 
                   <div className="cus-form form-top-space">
-                    <span>Enter a value</span>
+                    <span>Enter value:</span>
                     <input
                       className="input-design top-space"
                       type="text"
                       value={value}
                       onChange={(e) => setValue(e.target.value)}
-                      placeholder="Enter Value"
+                      placeholder="Enter you value"
                     />
                   </div>
                  <Button onClick={getCipherText}>Generate Cipher</Button>

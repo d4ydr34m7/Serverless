@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { Row, Button } from "react-bootstrap";
 import axios from "axios";
+import { Row, Button } from "react-bootstrap";
 
 export class FoodReview extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      //https://blog.logrocket.com/localstorage-javascript-complete-guide/
       user: JSON.parse(localStorage.getItem("user")),
       foodRating: "",
       itemId: props.location.state.foodId,
@@ -19,7 +20,12 @@ export class FoodReview extends Component {
     });
   };
 
-  saveItem = async (event) => {
+  exit = (e) => {
+    this.props.history.push("/orderFood");
+  };
+  
+//https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
+  saveRecipeItem = async (event) => {
     event.preventDefault();
     const itemBody = {
       ratings: this.state.foodRating,
@@ -41,9 +47,6 @@ export class FoodReview extends Component {
     }
   };
 
-  cancel = (e) => {
-    this.props.history.push("/orderFood");
-  };
   
   render() {
     return (
@@ -61,10 +64,10 @@ export class FoodReview extends Component {
           />
         </div>
         <div className="add-button">
-          <Button className="primary-button" onClick={this.saveItem}>
+          <Button className="primary-button" onClick={this.saveRecipeItem}>
             Submit
           </Button>
-          <Button className="primary-button" onClick={this.cancel}>
+          <Button className="primary-button" onClick={this.exit}>
             Cancel
           </Button>
         </div>
