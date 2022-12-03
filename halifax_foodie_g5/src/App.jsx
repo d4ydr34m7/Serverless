@@ -5,6 +5,8 @@ import Order from "./Components/FoodItem";
 import FoodReview from "./Components/FoodReview";
 import MultiFactor from "./Components/MultiFac";
 import ChatMod from "./Components/ChatMod";
+import RestaurantHome from "./Components/RestaurantHome";
+import CustomerHome from "./Components/CustomerHome";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import "../src/baseClass.css";
 import './App.css'
@@ -28,13 +30,18 @@ function App() {
         </Router>
       ) : (
         <Router>
-          <Switch>       
-            <Route exact path="/" component={MainPage} />
+          <Switch>   
+         <Route exact path="/question" component={MultiFactor} /> 
+         {!JSON.parse(localStorage.getItem("Role") == "customer") ? (
+            <Route exact path="/" component={RestaurantHome} />
+       ) : (<Route exact path="/" component={CustomerHome} />)} 
+            
             <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={FoodReview} />
             <Route exact path="/orderFood" component={Order} />
             <Route exact path="/chatRoom" component={ChatMod} />
-
+            {/* <Route exact path="/customerHome" component={CustomerHome} />
+            <Route exact path="/restaurantHome" component={RestaurantHome} /> */}
           </Switch>
         </Router>
       )}

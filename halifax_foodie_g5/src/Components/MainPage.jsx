@@ -93,7 +93,6 @@ export default function MainPage() {
   };
 
 
-  
   return (
     <div className="p-5">
       <Col className="card-item-content"> 

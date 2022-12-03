@@ -15,7 +15,7 @@ export default function MFA() {
   let [secondFactorQues, setQues] = useState();
   let questionForSecondFactor = "What is Your favorite movie?";
 
-  let [thirdFacKey, setKey] = useState("");
+  let [thirdFacKey, setKey] = useState("  ");
   let [value, setValue] = useState("");
   let [thirdFacCipher, setCipher] = useState("");
 
@@ -133,6 +133,14 @@ export default function MFA() {
         )
         .then((response) => {
           console.log(response);
+          // if(localStorage.getItem("Role") == "owner")
+          // {
+          //   navigate.push("/restaurantHome")
+          // }
+          // else
+          // {
+          //   navigate.push("/customerHome")
+          // }
           navigate.push("/");
           window.location.reload();
         })
@@ -161,7 +169,15 @@ export default function MFA() {
                         localStorage.setItem("IsQuestion", true)
                         localStorage.setItem("Role",registeredRole)
 
-                        navigate.push("/")
+                        if(localStorage.getItem("Role") == "owner")
+                        {
+                          navigate.push("/restaurantHome")
+                        }
+                        else
+                        {
+                          navigate.push("/customerHome")
+                        }
+                        // navigate.push("/")
                         window.location.reload()
                     })
                     .catch((err) => {
@@ -188,7 +204,7 @@ export default function MFA() {
                   ) : (
                     <div>
                       <div>
-                        <h4> Enter your Role</h4>
+                        <h4>Enter your Role</h4>
                       </div>
                       <div>
                         <span>Enter your role</span>
