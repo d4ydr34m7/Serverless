@@ -90,9 +90,7 @@ async function orderFoodFromRestaurant(row) {
                             Place Order
                         </Button>
                     </div>
-                    {/* <div align = "center"><button onClick={() => navigate.push('/orderFood', {restaurantId : restaurantId} ) }>Order</button></div> */}
                 </div>)})}
-              
           </div>
         </div>
     </div>

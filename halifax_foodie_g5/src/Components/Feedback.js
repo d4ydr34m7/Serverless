@@ -1,6 +1,6 @@
 import '../App.css';
 import React , {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route, useHistory, useLocation} from 'react-router-dom'; 
+import { BrowserRouter as Router, useHistory, useLocation} from 'react-router-dom'; 
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 export default function Feedback()
@@ -16,8 +16,6 @@ export default function Feedback()
     else{
         const restaurantId = state.restaurantId
         const fetchFeedbacks = async()  =>{
-          debugger
-          // await fetch("https://2qxf4xurjj355lmw7w3ghxb4pe0hdqmg.lambda-url.us-east-1.on.aws/" , {
             await fetch("https://6ne2nruzlq4jhd5a7sjylfk4oq0qxlgt.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
@@ -25,7 +23,6 @@ export default function Feedback()
             })
           })
           .then((res) => res.json()).then((res)=>{
-            // debugger
             if(res.status){
                 setListOfFeedbacks(res.data);
             }
@@ -45,7 +42,6 @@ export default function Feedback()
         <div>
           <div className="home_title" align = "center"><h2>User Feedbacks</h2></div>
           <div align = "center">
-            {/* {listOfFeedbacks.map((userFeedback) => {return (<div class="box" align = "left"><h3>FeedBack : {userFeedback.Feedback} <br></br> Polarity : {userFeedback.Polarity} <br></br> User id : {userFeedback.UserID}</h3></div>)})} */}
             <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/06e60249-dd2c-4e70-bf8d-253263059ad9/page/LuG9C" ></iframe>
           </div>
         </div>

@@ -1,15 +1,13 @@
 import '../App.css';
 import React , {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Routes, Route, useHistory, Link} from 'react-router-dom';
+import { BrowserRouter as Router, useHistory} from 'react-router-dom';
 import {Auth} from 'aws-amplify';  
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function RestaurantHome() {
   const navigate = useHistory();
-  const [listOfFeedbacks, setListOfFeedbacks] = useState([]);
   let [loggedInUser,setLoggedInUser] = useState(null);
   const getLoggedInUserRole = localStorage.getItem("Role");
-  // const restaurantId = 'restaurant1@res.ca';
 
   const state1 = JSON.parse(localStorage.getItem("user"))
   const restaurantId = state1.email
@@ -26,7 +24,6 @@ function RestaurantHome() {
     }
     else
     {
-      debugger
       logOut();
     }
   }, [])

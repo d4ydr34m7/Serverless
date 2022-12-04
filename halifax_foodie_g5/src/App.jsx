@@ -1,7 +1,5 @@
 import React from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import MainPage from "./Components/MainPage";
-import Order from "./Components/FoodItem";
 import FoodReview from "./Components/FoodReview";
 import MultiFactor from "./Components/MultiFac";
 import ChatMod from "./Components/ChatMod";
@@ -53,9 +51,6 @@ function App() {
             <Route exact path="/viewRecipes" component={ViewRecipesCustomer} />
             <Route exact path="/giveFeedback" component={GiveFeedback} />
             <Route exact path="/similarRecipes" component={ViewSimilarRecipes} />
-
-            {/* <Route exact path="/customerHome" component={CustomerHome} />
-            <Route exact path="/restaurantHome" component={RestaurantHome} /> */}
           </Switch>
         </Router>
       )}

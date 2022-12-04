@@ -1,7 +1,6 @@
 import '../App.css';
-import React , {useState, useEffect} from 'react';
-import axios from "axios";
-import { BrowserRouter as Router, Routes, Route, useHistory, Link, useLocation} from 'react-router-dom';
+import React , {useState} from 'react';
+import { BrowserRouter as Router, useHistory, useLocation} from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function GiveFeedback() 
@@ -13,15 +12,12 @@ function GiveFeedback()
   const state1 = JSON.parse(localStorage.getItem("user"))
   const userId = state1.email
 
-//   useEffect(() => {
     if( state == "" || state == null){
     navigate.push('/');
     }
     else{
         const restaurantId = state.restaurantId
-    //   setRestaurantId(state.restaurantID)
       console.log(restaurantId)
-      debugger
       const giveFeedbacktoRes =  async () =>{
             await fetch("https://czv4qrzjyxswse2tsyma7kbsfa0mymuv.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
@@ -32,23 +28,16 @@ function GiveFeedback()
             })
         })
         .then((res) =>{
-            debugger
             if(res.status){
-                alert("Inserted...")
-                // setListOfRecipes(res.data);
+                alert("Feedback Given successfully...")
             }
             else{
             alert("Error in finiding feedbacks.")
             }
         })
         .catch((error) =>{
-            debugger
         }); 
         }
-        // giveFeedback();
-    
-// }, []);
-
 
   return ( 
 
