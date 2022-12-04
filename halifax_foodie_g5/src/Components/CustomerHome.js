@@ -15,72 +15,32 @@ function CustomerHome() {
   console.log(localStorage.getItem("Role"))
 
   useEffect(() => {
-
-
-
     let timeInt = setInterval(() => {
-
-
-
       flagChk();
-
-
-
     }, 15000);
-
-
-
     return () => clearInterval(timeInt);
-
-
-
   },[]);
-
-
-
 
 //https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
 
   async function flagChk() {
-
     await axios
-
     .post(
-
       "https://vpivmqqpa1.execute-api.us-east-1.amazonaws.com/default/getflag",
-
       {
-
         headers: {
-
           "Content-Type": "application/json",
-
         },
-
       }
-
     )
-
-    .then((response) => {
-
+  .then((response) => {
       var chck=JSON.parse(response.data.body)
-
       if(chck!="false")
-
       {
-
         navigate.push("/chatRoom");
-
         window.location.reload();
-
       }
-
-
-
     });    
-
-
-
   }
 
   // https://reactjs.org/docs/hooks-effect.html

@@ -27,7 +27,7 @@ function ViewRecipesCustomer()
 
         const fetchRecipes = async () =>{
           // https://www.freecodecamp.org/news/fetch-data-react/
-            await fetch("https://kjsdpccsruapocfyv3ogk4r3p40cxvnp.lambda-url.us-east-1.on.aws/" , {
+            await fetch("https://7zyra5k7i7a4xtbc4ouscwrd7y0msfqc.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
             restaurantId: restaurantId
@@ -80,7 +80,7 @@ async function orderFoodFromRestaurant(row) {
           <div className="home_title" align = "center"><h2>Our Recipes</h2></div>
           <div align = "center">
               {listOfRecipes.map((recipes) => {
-                return (
+                        return (
                 <div class="box" align = "left">
                     <h3>Name : {recipes.RecipeName} 
                     <br></br> Price : {recipes.RecipePrice} 

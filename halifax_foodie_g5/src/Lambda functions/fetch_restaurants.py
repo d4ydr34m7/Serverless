@@ -16,6 +16,7 @@ def create_response(status, message, data):
 def lambda_handler(event, context):
     
     try:
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
         dynamo_db = boto3.resource('dynamodb')
         table = dynamo_db.Table('user')
     

@@ -8,6 +8,9 @@ from boto3.dynamodb.conditions import Key, Attr
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+# https://www.shedloadofcode.com/blog/creating-your-own-website-analytics-solution-with-aws-lambda-and-google-sheets
+# https://www.youtube.com/watch?v=mn_w1nSWqk0
+
 gc = gspread.service_account(filename='credentials.json')
 
 gsheet = gc.open("Customer_feedback_analytics")
@@ -24,6 +27,7 @@ def create_response(status, message, data):
 def lambda_handler(event, context):
     
     try:
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
         dynamo_db = boto3.resource('dynamodb')
         table = dynamo_db.Table('feedback')
         sheet1.clear()
@@ -42,6 +46,8 @@ def lambda_handler(event, context):
         if res['Count'] == 0:
             response = create_response(True,"No feedback present.", None)
         else:
+
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehend.html
             comprehend = boto3.client("comprehend")
             for i in range(res['Count']):
                 
