@@ -9,8 +9,13 @@ function RestaurantHome() {
   const [listOfFeedbacks, setListOfFeedbacks] = useState([]);
   let [loggedInUser,setLoggedInUser] = useState(null);
   const getLoggedInUserRole = localStorage.getItem("Role");
-  const restaurantId = 'restaurant1@res.ca';
-  console.log(console.log(localStorage.getItem("Role")))
+  // const restaurantId = 'restaurant1@res.ca';
+
+  const state1 = JSON.parse(localStorage.getItem("user"))
+  const restaurantId = state1.email
+
+
+  console.log(restaurantId)
 
   //https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
@@ -49,9 +54,10 @@ function RestaurantHome() {
     <div className="home_title" align = "center">
         <div><h1>Halifax Foodies</h1></div>
         <div>
-            <button onClick={() => navigate.push('/uploadRecipe', { state : {restaurantID : restaurantId} }) }> Upload Recipe</button>
-            <button onClick={() => navigate.push('/feedback', { state : {restaurantID : restaurantId} }) }> Get Feedback</button>
-            <button onClick={() => navigate.push('/ourRecipes', { state : {restaurantID : restaurantId} }) }>Our Recipes</button>
+            <button onClick={() => navigate.push('/similarRecipes', { restaurantId : restaurantId }) }> Similar</button>
+            <button onClick={() => navigate.push('/uploadRecipe', { restaurantId : restaurantId }) }> Upload Recipe</button>
+            <button onClick={() => navigate.push('/feedback', { restaurantId : restaurantId }) }> Get Feedback</button>
+            <button onClick={() => navigate.push('/ourRecipes', { restaurantId : restaurantId }) }>Our Recipes</button>
             <button onClick={() => logOut() }>Log Out</button>
         </div>
     </div>

@@ -14,6 +14,7 @@ import RestaurantRecipes from "./Components/RestaurantRecipes";
 import ViewRecipesCustomer from "./Components/ViewRecipesCustomer";
 import GiveFeedback from "./Components/GiveFeedback";
 import OrderFood from "./Components/OrderFood";
+import ViewSimilarRecipes from "./Components/ViewSimilarRecipes";
 import "../src/baseClass.css";
 import './App.css'
 
@@ -51,6 +52,7 @@ function App() {
             <Route exact path="/ourRecipes" component={RestaurantRecipes} />
             <Route exact path="/viewRecipes" component={ViewRecipesCustomer} />
             <Route exact path="/giveFeedback" component={GiveFeedback} />
+            <Route exact path="/similarRecipes" component={ViewSimilarRecipes} />
 
             {/* <Route exact path="/customerHome" component={CustomerHome} />
             <Route exact path="/restaurantHome" component={RestaurantHome} /> */}

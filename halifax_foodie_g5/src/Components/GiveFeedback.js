@@ -1,5 +1,6 @@
 import '../App.css';
 import React , {useState, useEffect} from 'react';
+import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, useHistory, Link, useLocation} from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -12,38 +13,41 @@ function GiveFeedback()
   const state1 = JSON.parse(localStorage.getItem("user"))
   const userId = state1.email
 
-  useEffect(() => {
+//   useEffect(() => {
     if( state == "" || state == null){
     navigate.push('/');
     }
     else{
-        console.log(state.restaurantID)
-        const restaurantId = state.restaurantID
+        const restaurantId = state.restaurantId
     //   setRestaurantId(state.restaurantID)
       console.log(restaurantId)
-
-      const giveFeedback = async () =>{
-        debugger
-        console.log(restaurantId)
-            await fetch("https://kjsdpccsruapocfyv3ogk4r3p40cxvnp.lambda-url.us-east-1.on.aws/" , {
+      debugger
+      const giveFeedbacktoRes =  async () =>{
+            await fetch("https://czv4qrzjyxswse2tsyma7kbsfa0mymuv.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
             restaurantId: restaurantId,
-            feedback: feedback
+            feedback: feedback,
+            userId: userId
             })
         })
-        .then((res) => res.json()).then((res)=>{
+        .then((res) =>{
+            debugger
             if(res.status){
+                alert("Inserted...")
                 // setListOfRecipes(res.data);
             }
             else{
             alert("Error in finiding feedbacks.")
             }
+        })
+        .catch((error) =>{
+            debugger
         }); 
         }
-        giveFeedback();
-    }
-}, []);
+        // giveFeedback();
+    
+// }, []);
 
 
   return ( 
@@ -53,16 +57,19 @@ function GiveFeedback()
         <div className="home_title" align = "center"><h3>Restaurant Id : {restaurantId}</h3></div>
         <br></br>
         <div align="center">
+            <div>
             <form>
                 <div>
                 <input type="text" id="feedback" name="feedback" onChange={(e) => setFeedback(e.target.value)} placeholder="Give Your Feedback"></input>
                 </div>
-                <div>
-                <input type="submit" value="Submit"></input>
-                </div>
             </form>
-     </div>
+            </div>
+            <div>
+                <button onClick={() => {giveFeedbacktoRes()}}> Give Feedback</button>
+            </div>
+        </div>
     </div>
   )
+    }
 }
 export default GiveFeedback;

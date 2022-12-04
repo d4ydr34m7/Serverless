@@ -70,7 +70,6 @@ function CustomerHome()
                 <th>Restaurant Id</th>
                 <th>Contact</th>
                 <th>Address</th>
-                <th>Ratings(5) </th>
                 <th>View Food items</th>
                 <th>Give Feedback</th>
             </tr>
@@ -81,7 +80,6 @@ function CustomerHome()
                   <td>{restaurants.restaurantId}</td>
                   <td>{restaurants.restaurantContact}</td>
                   <td>{restaurants.restaurantAddress}</td>
-                  <td>4.5</td>
                   <td><button onClick={() => navigate.push('/viewRecipes', {restaurantId : restaurants.restaurantId} ) }> View Recipes</button></td>
                   <td><button onClick={() => navigate.push('/giveFeedback', {restaurantId : restaurants.restaurantId} ) }> Give Feedback</button></td>
                 </tr>

@@ -14,9 +14,11 @@ export default function Feedback()
     navigate.push('/');
     }
     else{
-        const restaurantId = state.restaurantID
+        const restaurantId = state.restaurantId
         const fetchFeedbacks = async()  =>{
-          await fetch("https://2qxf4xurjj355lmw7w3ghxb4pe0hdqmg.lambda-url.us-east-1.on.aws/" , {
+          debugger
+          // await fetch("https://2qxf4xurjj355lmw7w3ghxb4pe0hdqmg.lambda-url.us-east-1.on.aws/" , {
+            await fetch("https://6ne2nruzlq4jhd5a7sjylfk4oq0qxlgt.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
               restaurantId: restaurantId

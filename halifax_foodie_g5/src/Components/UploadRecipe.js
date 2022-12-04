@@ -20,19 +20,21 @@ const myBucket = new AWS.S3({
 function UploadRecipe(){
   const [selectedFile, setSelectedFile] = useState(null);
   const [listOfRecipes, setListOfRecipes] = useState([]);
+  let ingredients = useState("");
   const [progress , setProgress] = useState(0);
   const navigate = useHistory();
   const { state } = useLocation();
-  const restaurantId = 'restaurant1@res.ca';
+  const restaurantId = state.restaurantId;
   useEffect(() => {
     if( state == "" || state == null){
     navigate.push('/');
     }
     else{
-        const restaurantId = state.restaurantID
+        const restaurantId = state.restaurantId
 
-        const fetchFeedbacks = async () =>{
-          await fetch("https://g2wzzee4bt7vmp6kjs6lqcwbke0fcizb.lambda-url.us-east-1.on.aws/" , {
+        const fetchRecipes = async () =>{
+          await fetch("https://dffogkrigyuqf5lgtd4iduroqy0imbqc.lambda-url.us-east-1.on.aws/" , {
+          // await fetch("https://g2wzzee4bt7vmp6kjs6lqcwbke0fcizb.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({
               restaurantId: restaurantId
@@ -48,7 +50,7 @@ function UploadRecipe(){
             }
           });
           }
-          fetchFeedbacks();
+          fetchRecipes();
       }
 }, []);
 
@@ -82,7 +84,7 @@ function UploadRecipe(){
   const extractKeyIngredients = async (file) => {   
     const filename = file.name.split('.')[0]
     debugger
-    let res = await fetch("https://nynkrynoukybh6yofqkhefw7sm0yjbzf.lambda-url.us-east-1.on.aws/" , {
+    let res = await fetch("https://m4nuhbfvvxinyhjhw3t3bhfh640ukzbp.lambda-url.us-east-1.on.aws/" , {
     method: "POST",
     body: JSON.stringify({
       filename: filename, restaurantId: restaurantId
@@ -114,8 +116,8 @@ function UploadRecipe(){
               <div className="box" align = "left">
                 <h3>
                   Name : {recipes.RecipeName} <br></br><br></br>
-                  Key Ingredients : {recipes.RecipeIngredients.map((i) => {return(<h4>{i}</h4>)})}
-                  <button onClick={() => navigate.push('/SimilarRecipes', { state : {recipeName : recipes.RecipeName} }) }> View Similar Recipes</button>
+                  Key Ingredients : {recipes.RecipeIngredients.map((i) => { {ingredients = ingredients+","+i} return(<h4>{i}</h4>)})}
+                  <button onClick={() => navigate.push('/similarRecipes', {ingredients : ingredients}) }> View Similar Recipes</button>
                 </h3>
               </div>
               )
