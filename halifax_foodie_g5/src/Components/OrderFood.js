@@ -7,7 +7,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function OrderFood()
 {
-    const navigate = useHistory();
+  const navigate = useHistory();
   const { state } = useLocation();
   const [listOfRecipes, setListOfRecipes] = useState([]);
   const restaurantId = state.restaurantId
