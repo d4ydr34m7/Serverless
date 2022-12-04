@@ -46,17 +46,14 @@ function ViewRecipesCustomer()
 
 
 //https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
-async function orderitem(row) {
+async function orderFoodFromRestaurant(row) {
     const itemBody = {
         foodName: row["RecipeName"],
         foodId: row["RecipeID"],
         price: row["RecipePrice"],
         userName: userId,
         restaurantId: state.restaurantId,
-    //   foodName: row["foodName"],
-    //   foodId: row["foodId"],
-    //   price: row["price"],
-    //   userName: this.state.user.email,
+   
     };
   
     try {
@@ -66,12 +63,10 @@ async function orderitem(row) {
         JSON.stringify(itemBody),
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("re", result);
       
       alert("Ordered " + row["RecipeName"] + " Successfully");
       this.props.history.push("/giveratings", { foodId: itemBody.foodId });
     } catch (error) {
-      console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
   }
 
@@ -91,7 +86,7 @@ async function orderitem(row) {
                     <br></br> Id : {recipes.RecipeID}
                     </h3>
                     <div align = "center">
-                        <Button className="add-button" onClick={() => orderitem(recipes)} >
+                        <Button className="add-button" onClick={() => orderFoodFromRestaurant(recipes)} >
                             Place Order
                         </Button>
                     </div>

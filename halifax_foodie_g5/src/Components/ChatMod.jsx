@@ -68,7 +68,7 @@ export default function ChatMod({sentBy}) {
                     && !props.customerList.length
                     &&
                     <h1 style={{color: 'grey'}}>
-                        No Customers !!!
+                        There are no customers !!!
                     </h1>
                 }
             </div>
