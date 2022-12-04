@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
+
 function Visualization() {
   const navigate = useHistory();
   const { state } = useLocation();
@@ -10,6 +11,7 @@ function Visualization() {
   const state1 = JSON.parse(localStorage.getItem("user"))
 
   const userId = state1.email
+
 
   useEffect(() => {
     if (state == "" || state == null) {
@@ -37,6 +39,7 @@ function Visualization() {
       fetchFeedbacks();
     }
   }, []);
+
 
   return (
     <div>
