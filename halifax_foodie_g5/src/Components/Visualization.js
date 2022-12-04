@@ -1,12 +1,15 @@
 import '../App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
-export default function Feedback() {
-  const [listOfFeedbacks, setListOfFeedbacks] = useState([]);
-  const { state } = useLocation();
+function Visualization() {
   const navigate = useHistory();
+  const { state } = useLocation();
+  
+  const state1 = JSON.parse(localStorage.getItem("user"))
+
+  const userId = state1.email
 
   // https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
@@ -17,7 +20,7 @@ export default function Feedback() {
       const restaurantId = state.restaurantId
       const fetchFeedbacks = async () => {
         // https://www.freecodecamp.org/news/fetch-data-react/
-        await fetch("https://6ne2nruzlq4jhd5a7sjylfk4oq0qxlgt.lambda-url.us-east-1.on.aws/", {
+        await fetch("url.....", {
           method: "POST",
           body: JSON.stringify({
             restaurantId: restaurantId
@@ -25,10 +28,10 @@ export default function Feedback() {
         })
           .then((res) => res.json()).then((res) => {
             if (res.status) {
-              setListOfFeedbacks(res.data);
+              
             }
             else {
-              alert("Error in finiding feedbacks.")
+              alert("Error in finiding data.")
             }
           })
       }
@@ -41,7 +44,7 @@ export default function Feedback() {
       <div className="home_title" align="center"><h1>Halifax Foodies</h1></div>
       <br></br>
       <div>
-        <div className="home_title" align="center"><h2>User Feedbacks</h2></div>
+        <div className="home_title" align="center"><h2>Visualization</h2></div>
         <div align="center">
           <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/06e60249-dd2c-4e70-bf8d-253263059ad9/page/LuG9C" ></iframe>
         </div>
@@ -49,4 +52,4 @@ export default function Feedback() {
     </div>
   )
 }
-
+export default Visualization;

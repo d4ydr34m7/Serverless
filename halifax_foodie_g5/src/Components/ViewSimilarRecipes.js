@@ -1,10 +1,6 @@
 import '../App.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useHistory, Link, useLocation } from 'react-router-dom';
-import { Container, Col, Row, Button } from "react-bootstrap";
-import { Card } from "react-bootstrap";
-import axios from "axios";
-import { getFormDataFromEvent } from '@aws-amplify/ui';
+import { useHistory, useLocation } from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function ViewSimilarRecipes() {
@@ -12,16 +8,11 @@ function ViewSimilarRecipes() {
   const { state } = useLocation();
   const [listOfRecipes, setListOfRecipes] = useState([]);
 
-  const [listOfIngredients, setListOfIngredients] = useState([]);
   const [listOfRec, setListOfRec] = useState([]);
   const [listOfResId, setListOfRestId] = useState([]);
-  let labelOfRecipe = "";
-  const [finalList, setFinalList] = useState([]);
+  const [labelOfRecipe, setLabelOfRecipe] = useState("");
   const [modelOutput, setModelOutput] = useState([]);
   const restaurantId = state.restaurantId;
-  const ingredients = state.ingredients;
-  let ingre = "";
-  let count = 0;
 
   const state1 = JSON.parse(localStorage.getItem("user"))
 
@@ -29,6 +20,7 @@ function ViewSimilarRecipes() {
 
   const getLabelForAllRecipes = async (ingredients) => {
     
+    // https://www.freecodecamp.org/news/fetch-data-react/
     await fetch("http://localhost:8080/", {
       method: "POST",
       body: JSON.stringify({
@@ -39,10 +31,12 @@ function ViewSimilarRecipes() {
         if (res.length) {
           if(res[0].confidence > res[1].confidence)
           {
-            modelOutput.push("VEG")
+            // https://beta.reactjs.org/learn/updating-arrays-in-state
+            setModelOutput(m=> [...m, "VEG"]);
           }
           else{
-            modelOutput.push("NON-VEG")
+            // https://beta.reactjs.org/learn/updating-arrays-in-state
+            setModelOutput(m=>[...m, "NON-VEG"]);
           }
         }
         else {
@@ -52,10 +46,9 @@ function ViewSimilarRecipes() {
       console.log("modelOutput : ", modelOutput)
   }
 
-  
-  console.log("modelOutput : ", modelOutput)
   const getLabel = async (ingredients) => {
     
+    // https://www.freecodecamp.org/news/fetch-data-react/
     await fetch("http://localhost:8080/", {
       method: "POST",
       body: JSON.stringify({
@@ -66,10 +59,10 @@ function ViewSimilarRecipes() {
         if (res.length) {
           if(res[0].confidence > res[1].confidence)
           {
-            labelOfRecipe = "VEG";
+            setLabelOfRecipe("VEG");
           }
           else{
-            labelOfRecipe = "NON_VEG";
+            setLabelOfRecipe("NON-VEG");
           }
         }
         else {
@@ -79,35 +72,16 @@ function ViewSimilarRecipes() {
       console.log("Label : ", labelOfRecipe);
   }
 
+  // https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
     if (state == "" || state == null) {
       navigate.push('/');
     }
     else {
       const ingredients = state.ingredients
-      console.log(ingredients)
-
-
-      // const findLableForAllRecipes = async (ind) => {
-      //   await fetch("http://localhost:8080/", {
-      //     method: "POST",
-      //     body: JSON.stringify({
-      //       text: ind
-      //       // ind: "tomato,onions"
-      //     })
-      //   })
-      //     .then((res) => res.json()).then((res) => {
-
-      //       // if(res.status){
-      //       //     setListOfRecipes(res.data);
-      //       // }
-      //       // else{
-      //       // alert("Error in finiding feedbacks.")
-      //       // }
-      //     });
-      // }
 
       const fetchAllRecipes = async () => {
+        // https://www.freecodecamp.org/news/fetch-data-react/
         await fetch("https://nfeqvjhkjhzexerehls4dm3eau0wlyfw.lambda-url.us-east-1.on.aws/", {
           method: "POST",
           body: JSON.stringify({
@@ -116,30 +90,14 @@ function ViewSimilarRecipes() {
         })
           .then((res) => res.json()).then((res) => {
             if (res.status) {
-              setListOfRecipes(res.data); //async
-              // queue entry
+              setListOfRecipes(res.data);
               console.log(listOfRecipes)
-              // console.log(listOfRecipes);
-              //   listOfIngredients.map((ind) => {
-              //     console.log(ind);
-              //     findLableForAllRecipes(ind);
-              //   })
             }
             else {
               alert("Error in finiding Recipes.")
             }
           });
 
-        // listOfRecipes.map((recipes) => {
-        //   listOfRec.push(recipes.RecipeName)
-        //   recipes.RecipeIngredients.map((i) => { { ingre = ingre + "," + i } listOfIngredients.push(ingre) })
-        //   listOfResId.push(recipes.ResId)
-        // })
-
-        // listOfIngredients.map((ind) => {
-        //   console.log(ind)
-        //   findLableForAllRecipes(ind)
-        // })
       }
 
       getLabel(ingredients);
@@ -148,6 +106,7 @@ function ViewSimilarRecipes() {
     }
   }, []);
 
+  // https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
     console.log("list of recipes: ", listOfRecipes);
     let ingredients = [];
@@ -156,12 +115,10 @@ function ViewSimilarRecipes() {
         let recipe = list.RecipeIngredients.join(",");
         let recipeName = list.RecipeName;
         let restaurantId = list.ResId;
-        // ingredients += list.RecipeIngredients.join(",") + ",";
         ingredients.push(recipe);
         listOfRec.push(recipeName);
         listOfResId.push(restaurantId);
       });
-      // ingredients : [ "" ]
 
       console.log("ingredients: ", ingredients);
       console.log("listOfRec: ", listOfRec);
@@ -173,64 +130,25 @@ function ViewSimilarRecipes() {
     }
   }, [listOfRecipes])
 
-  useEffect(() => {
-
-    if(modelOutput.length > 0){
-    return (
-      <div>
-        <div className="home_title" align="center"><h1>Halifax Foodies</h1></div>
-        <br></br>
-        <div>
-          <div className="home_title" align="center"><h2>Similar Recipes</h2></div>
-          <div align="center">
-          {modelOutput.map((labels) => { 
-            
-            if(labels == labelOfRecipe)
-            {
-              <div className="box" align = "center">
-                  <h3>
-                    Recipe Name :  {listOfRec[count]}<br></br>
-                    Restaurant Id : {listOfResId[count]}
-                  </h3>
-                </div>
-              count += 1;
-            }
-            else
-            {
-              count += 1;
-            }
-          })}
-          </div>
-        </div>
-      </div>
-    )
-    }
-  }, [modelOutput])
-
 
   return (
+    // https://stackoverflow.com/questions/59089249/react-incrementing-variable-within-map-function
     <div>
       <div className="home_title" align="center"><h1>Halifax Foodies</h1></div>
       <br></br>
       <div>
         <div className="home_title" align="center"><h2>Similar Recipes</h2></div>
         <div align="center">
-        {modelOutput.map((labels) => { 
-          
-          if(labels == labelOfRecipe)
-          {
-            <div className="box" align = "center">
-                <h3>
-                  Recipe Name :  {listOfRec[count]}<br></br>
-                  Restaurant Id : {listOfResId[count]}
-                </h3>
-              </div>
-            count += 1;
-          }
-          else
-          {
-            count += 1;
-          }
+        {modelOutput.length > 0 && modelOutput.map((label, index) => {
+          return label === labelOfRecipe ? (
+            <div className="box" align = "left">
+              <h3>
+                Recipe Name :  {listOfRec[index]}<br></br>
+                Restaurant Id : {listOfResId[index]}
+                {index = index+1}
+              </h3>
+            </div>
+          ) : "No recipes found!!"
         })}
         </div>
       </div>
