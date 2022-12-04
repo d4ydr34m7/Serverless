@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     
     try:
         dynamo_db = boto3.resource('dynamodb')
-        table = dynamo_db.Table('restaurant_recipes')
+        table = dynamo_db.Table('recipe')
     
         restaurant_recipes = []
         

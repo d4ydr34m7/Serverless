@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     
     try:
         dynamo_db = boto3.resource('dynamodb')
-        table = dynamo_db.Table('recipe_key_ingredients')
+        table = dynamo_db.Table('recipeKeyIngredients')
     
         extracted_recipes = []
         
@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         body_json = json.loads(body)
         restaurant_id = body_json['restaurantId']
         
-        # logger.info(restaurant_id)
+        logger.info(restaurant_id)
 
         res = table.scan(FilterExpression=Attr('restaurant_id').eq(restaurant_id))
         logger.info(res)
