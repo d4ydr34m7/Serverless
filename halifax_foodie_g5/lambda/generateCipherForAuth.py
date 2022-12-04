@@ -25,8 +25,6 @@ def createCipherText(key, plainText):
         j += 1
     return cipherText
 
-
-
 def lambda_handler(event, context):
     userTable = dynamodb.Table('user')
     cipherText = createCipherText(data['key'],data['plainText'])

@@ -18,6 +18,7 @@ def cipherDecrypt(cipher,key):
     listOfKey = sorted(list(key))
     cipherDec = []
 
+
     for _ in range(row):
         cipherDec += [[None] * c]
 
@@ -38,6 +39,7 @@ def cipherDecrypt(cipher,key):
         return pText[: -nullVal]
     
     return pText
+    
     
 def lambda_handler(event, context):
     body=event
