@@ -5,7 +5,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import db from "../firebase";
 
-// https://reactjs.org/docs/hooks-state.html
+// /https://reactjs.org/docs/hooks-state.html
 export default function MFA() {
   let navigate = useHistory();
 
@@ -20,7 +20,7 @@ export default function MFA() {
   let [thirdFacCipher, setCipher] = useState("");
 
   let databaseUser;
-
+ 
 //https://reactjs.org/docs/hooks-effect.html
 //https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(async () => {

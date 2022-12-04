@@ -46,9 +46,9 @@ function Visualization() {
       <div>
         <div className="home_title" align="center"><h2>Visualization</h2></div>
         <div align="center">
-        <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/null" frameborder="0" style="border:0" allowfullscreen></iframe>
-        <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/e95ba424-da62-4fa6-a8c4-6a241c017a72/page/BIZ9C" frameborder="0" style="border:0" allowfullscreen></iframe>
-        <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/04c315c1-f53f-47fa-ab0c-9c917aa761df/page/sGZ9C" frameborder="0" style="border:0" allowfullscreen></iframe>
+        {/* <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/null" frameborder="0" style={{border: 0}} allowFullScreen></iframe> */}
+        <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/e95ba424-da62-4fa6-a8c4-6a241c017a72/page/BIZ9C" frameborder="0" style={{border: 0}} allowFullScreen></iframe>
+        <iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/04c315c1-f53f-47fa-ab0c-9c917aa761df/page/sGZ9C" frameborder="0" style={{border: 0}} allowFullScreen></iframe>
         </div>
       </div>
     </div>
