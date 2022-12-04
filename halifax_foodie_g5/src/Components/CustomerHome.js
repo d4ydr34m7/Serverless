@@ -49,7 +49,7 @@ function CustomerHome() {
     if (localStorage.getItem("IsQuestion") && localStorage.getItem("Role") == "customer") {
       const fetchRestaurant = async () => {
         // https://www.freecodecamp.org/news/fetch-data-react/
-        await fetch("https://rcwj3zngybl7o3oa24yyxhtyiu0pdqaz.lambda-url.us-east-1.on.aws/", {
+        await fetch("https://nsltfuxna4who3jwvu7pbq72si0jciyv.lambda-url.us-east-1.on.aws/", {
           method: "POST",
           body: JSON.stringify({
 
