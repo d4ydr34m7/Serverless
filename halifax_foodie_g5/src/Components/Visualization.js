@@ -20,7 +20,7 @@ function Visualization() {
       const restaurantId = state.restaurantId
       const fetchFeedbacks = async () => {
         // https://www.freecodecamp.org/news/fetch-data-react/
-        await fetch("https://tcwaak3y3in6wz5vv3xyg3h3xu0raiiy.lambda-url.us-east-1.on.aws/", {
+        await fetch("https://uvbxfjihnby63d7gtptjig3ciq0jliqt.lambda-url.us-east-1.on.aws/", {
           method: "POST",
           body: JSON.stringify({
             restaurantId: restaurantId
@@ -31,7 +31,21 @@ function Visualization() {
               
             }
             else {
-              alert("Error in finiding data.")
+              console.log("error")
+            }
+          })
+          await fetch("https://mged25tyh5uhntkoqjvo5bdpmu0crdpz.lambda-url.us-east-1.on.aws/", {
+          method: "POST",
+          body: JSON.stringify({
+            restaurantId: restaurantId
+          })
+        })
+          .then((res) => res.json()).then((res) => {
+            if (res.body) {
+              
+            }
+            else {
+              console.log("error")
             }
           })
       }
