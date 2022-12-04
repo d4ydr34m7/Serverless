@@ -17,12 +17,19 @@ def create_response(status, message, data):
 def lambda_handler(event, context):
     
     try:
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
         dynamo_db = boto3.resource('dynamodb')
         table = dynamo_db.Table('recipeKeyIngredients')
     
         extracted_recipes = []
+        
+        body = event['body']
+        body_json = json.loads(body)
+        restaurant_id = body_json['restaurantId']
+        
+        logger.info(restaurant_id)
 
-        res = table.scan()
+        res = table.scan(FilterExpression=Attr('restaurant_id').eq(restaurant_id))
         logger.info(res)
         if res['Count'] == 0:
             response = create_response(True,"No recipe present.", None)
@@ -33,11 +40,9 @@ def lambda_handler(event, context):
     
                 recipe_name = res['Items'][i]['recipe_name']
                 recipe_ingredients = res['Items'][i]['ingredients']
-                res_id = res['Items'][i]['restaurant_id']
                 
                 dictionary['RecipeName'] = recipe_name
                 dictionary['RecipeIngredients'] = recipe_ingredients
-                dictionary['ResId'] = res_id
                 
                 extracted_recipes.append(dictionary)
           

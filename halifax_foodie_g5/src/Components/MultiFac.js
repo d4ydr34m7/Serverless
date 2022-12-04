@@ -159,11 +159,13 @@ export default function MFA() {
 
                         if(localStorage.getItem("Role") == "owner")
                         {
-                          navigate.push("/restaurantHome")
+                          // navigate.push("/restaurantHome")
+                          navigate.push("/")
                         }
                         else
                         { 
-                          navigate.push("/customerHome")
+                          // navigate.push("/customerHome")
+                          navigate.push("/")
                         }
                         // navigate.push("/")
                         window.location.reload()

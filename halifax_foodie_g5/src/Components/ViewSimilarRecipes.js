@@ -21,7 +21,7 @@ function ViewSimilarRecipes() {
   const getLabelForAllRecipes = async (ingredients) => {
     
     // https://www.freecodecamp.org/news/fetch-data-react/
-    await fetch("http://localhost:8080/", {
+    await fetch("https://us-central1-serverlessprojectgroup5.cloudfunctions.net/PredictSimilarRecipes", {
       method: "POST",
       body: JSON.stringify({
         text: ingredients
@@ -49,7 +49,7 @@ function ViewSimilarRecipes() {
   const getLabel = async (ingredients) => {
     
     // https://www.freecodecamp.org/news/fetch-data-react/
-    await fetch("http://localhost:8080/", {
+    await fetch("https://us-central1-serverlessprojectgroup5.cloudfunctions.net/PredictSimilarRecipes", {
       method: "POST",
       body: JSON.stringify({
         text: ingredients

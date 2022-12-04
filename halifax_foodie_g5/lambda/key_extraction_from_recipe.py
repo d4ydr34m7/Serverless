@@ -16,7 +16,11 @@ def create_response(status, message, data):
 
 def lambda_handler(event, context):
     try:
+
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html
         s3 = boto3.client("s3")
+
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
         dynamo_db = boto3.resource('dynamodb')
         table = dynamo_db.Table('recipeKeyIngredients')
         
@@ -35,6 +39,8 @@ def lambda_handler(event, context):
         else:
             file1 = s3.get_object(Bucket = bucket, Key = key)
             paragraph = str(file1['Body'].read())
+
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/comprehend.html
             comprehend = boto3.client("comprehend")
             response = comprehend.detect_key_phrases(Text = paragraph, LanguageCode = "en")
             ingredients = []
