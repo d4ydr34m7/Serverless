@@ -1,7 +1,7 @@
 import '../App.css';
 import React , {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route, useHistory, Link, useLocation} from 'react-router-dom';
-import { Container, Col, Row, Button } from "react-bootstrap";
+import {  Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 window.Buffer = window.Buffer || require("buffer").Buffer;
@@ -17,6 +17,7 @@ function ViewRecipesCustomer()
   
   const userId = state1.email
 
+  // https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
     if( state == "" || state == null){
     navigate.push('/');
@@ -25,6 +26,7 @@ function ViewRecipesCustomer()
         const restaurantId = state.restaurantId
 
         const fetchRecipes = async () =>{
+          // https://www.freecodecamp.org/news/fetch-data-react/
             await fetch("https://kjsdpccsruapocfyv3ogk4r3p40cxvnp.lambda-url.us-east-1.on.aws/" , {
             method: "POST",
             body: JSON.stringify({

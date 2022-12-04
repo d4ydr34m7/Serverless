@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
-
 function Visualization() {
   const navigate = useHistory();
   const { state } = useLocation();
@@ -12,7 +11,7 @@ function Visualization() {
 
   const userId = state1.email
 
-
+  // https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
     if (state == "" || state == null) {
       navigate.push('/');
@@ -39,7 +38,6 @@ function Visualization() {
       fetchFeedbacks();
     }
   }, []);
-
 
   return (
     <div>

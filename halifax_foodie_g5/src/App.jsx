@@ -11,22 +11,14 @@ import UploadRecipe from "./Components/UploadRecipe";
 import RestaurantRecipes from "./Components/RestaurantRecipes";
 import ViewRecipesCustomer from "./Components/ViewRecipesCustomer";
 import GiveFeedback from "./Components/GiveFeedback";
-import OrderFood from "./Components/OrderFood";
 import ViewSimilarRecipes from "./Components/ViewSimilarRecipes";
+import Visualization from "./Components/Visualization";
 import "../src/baseClass.css";
 import './App.css'
 
-
 function App() {
   return (
-    // <div className="App">
     <>
-      {/* <Router>
-        <Routes>
-          
-        </Routes>
-      </Router> */}
-
       {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
         <Router>
           <Switch>
@@ -35,15 +27,14 @@ function App() {
         </Router>
       ) : (
         <Router>
-          <Switch>   
-         <Route exact path="/question" component={MultiFactor} /> 
-         {!JSON.parse(localStorage.getItem("Role") == "customer") ? (
-            <Route exact path="/" component={RestaurantHome} />
-       ) : (<Route exact path="/" component={CustomerHome} />)} 
-            
+          <Switch>
+            <Route exact path="/question" component={MultiFactor} />
+            {!JSON.parse(localStorage.getItem("Role") == "customer") ? (
+              <Route exact path="/" component={RestaurantHome} />
+            ) : (<Route exact path="/" component={CustomerHome} />)}
+
             <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={FoodReview} />
-            <Route exact path="/orderFood" component={OrderFood} />
             <Route exact path="/chatRoom" component={ChatMod} />
             <Route exact path="/feedback" component={Feedback} />
             <Route exact path="/uploadRecipe" component={UploadRecipe} />
@@ -51,11 +42,10 @@ function App() {
             <Route exact path="/viewRecipes" component={ViewRecipesCustomer} />
             <Route exact path="/giveFeedback" component={GiveFeedback} />
             <Route exact path="/similarRecipes" component={ViewSimilarRecipes} />
+            <Route exact path="/visualization" component={Visualization} />
           </Switch>
         </Router>
       )}
-      
-    {/* </div> */}
     </>
   );
 }

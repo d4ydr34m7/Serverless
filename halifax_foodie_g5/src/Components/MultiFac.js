@@ -5,7 +5,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import db from "../firebase";
 
-// /https://reactjs.org/docs/hooks-state.html
+// https://reactjs.org/docs/hooks-state.html
 export default function MFA() {
   let navigate = useHistory();
 
@@ -76,8 +76,6 @@ export default function MFA() {
         );
         console.log(result);
         setCipher(result.data.body);
-        // history.push("/");
-        // window.location.reload();
       } catch (error) {
         console.error(error);
       }  };
@@ -103,8 +101,6 @@ export default function MFA() {
         if (secondFactorAns === databaseUser?.answer) {
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", databaseUser.role);
-          // history.push("/");
-          // window.location.reload();
         } else {
           alert("invalid answer");
         }
@@ -133,14 +129,6 @@ export default function MFA() {
         )
         .then((response) => {
           console.log(response);
-          // if(localStorage.getItem("Role") == "owner")
-          // {
-          //   navigate.push("/restaurantHome")
-          // }
-          // else
-          // {
-          //   navigate.push("/customerHome")
-          // }
           navigate.push("/");
           window.location.reload();
         })

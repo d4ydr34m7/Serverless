@@ -18,17 +18,11 @@ def lambda_handler(event, context):
     
     try:
         dynamo_db = boto3.resource('dynamodb')
-        table = dynamo_db.Table('recipe')
+        table = dynamo_db.Table('recipeKeyIngredients')
     
-        restaurant_recipes = []
-        
-        body = event['body']
-        body_json = json.loads(body)
-        restaurant_id = body_json['restaurantId']
-        
-        logger.info(restaurant_id)
+        extracted_recipes = []
 
-        res = table.scan(FilterExpression=Attr('restaurant_id').eq(restaurant_id))
+        res = table.scan()
         logger.info(res)
         if res['Count'] == 0:
             response = create_response(True,"No recipe present.", None)
@@ -38,18 +32,16 @@ def lambda_handler(event, context):
                 dictionary = {}
     
                 recipe_name = res['Items'][i]['recipe_name']
-                recipe_id = res['Items'][i]['id']
-                recipe_price = res['Items'][i]['price']
-                recipe_description = res['Items'][i]['recipe_desc']
+                recipe_ingredients = res['Items'][i]['ingredients']
+                res_id = res['Items'][i]['restaurant_id']
                 
-                dictionary['RecipeID'] = recipe_id
                 dictionary['RecipeName'] = recipe_name
-                dictionary['RecipePrice'] = recipe_price
-                dictionary['RecipeDescription'] = recipe_description
+                dictionary['RecipeIngredients'] = recipe_ingredients
+                dictionary['ResId'] = res_id
                 
-                restaurant_recipes.append(dictionary)
+                extracted_recipes.append(dictionary)
           
-            response = create_response(True, "Recipes found successfully", restaurant_recipes)
+            response = create_response(True, "Recipes found successfully", extracted_recipes)
 
     except Exception as e:
         response = create_response(False, str(e), None)

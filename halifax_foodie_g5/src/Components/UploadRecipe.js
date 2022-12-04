@@ -1,7 +1,9 @@
 import '../App.css';
 import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk'
-import { BrowserRouter as Router, Routes, Route, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+
+// https://javascript.plainenglish.io/how-to-upload-files-to-aws-s3-in-react-591e533d615e
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 const REGION = process.env.REACT_APP_REGION;
@@ -30,6 +32,7 @@ function UploadRecipe() {
     }
     else {
       const restaurantId = state.restaurantId
+
 
       const fetchRecipes = async () => {
         await fetch("https://dffogkrigyuqf5lgtd4iduroqy0imbqc.lambda-url.us-east-1.on.aws/", {
@@ -82,7 +85,6 @@ function UploadRecipe() {
 
   const extractKeyIngredients = async (file) => {
     const filename = file.name.split('.')[0]
-    debugger
     let res = await fetch("https://m4nuhbfvvxinyhjhw3t3bhfh640ukzbp.lambda-url.us-east-1.on.aws/", {
       method: "POST",
       body: JSON.stringify({

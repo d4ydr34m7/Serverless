@@ -25,7 +25,8 @@ def lambda_handler(event, context):
     
     try:
         dynamo_db = boto3.resource('dynamodb')
-        table = dynamo_db.Table('customer_feedback')
+        table = dynamo_db.Table('feedback')
+        sheet1.clear()
     
         users_feedback_polarity = []
         
@@ -34,15 +35,13 @@ def lambda_handler(event, context):
 
         body_json = json.loads(body)
         restaurant_id = body_json['restaurantId']
-        
-        logger.info("Helloooooooooooooooooo")
+        logger.info(restaurant_id)
+
         res = table.scan(FilterExpression=Attr('restaurant_id').eq(restaurant_id))
-        logger.info("Helloooooooooooooooooo")
         
         if res['Count'] == 0:
             response = create_response(True,"No feedback present.", None)
         else:
-            logger.info("Helloooooooooooooooooo")
             comprehend = boto3.client("comprehend")
             for i in range(res['Count']):
                 
@@ -61,6 +60,7 @@ def lambda_handler(event, context):
                 logger.info(feedback)
                 logger.info(polarity)
                 row= [user_id, feedback, polarity]
+                sheet1.insert_row(["user_id","feedback","polarity"], index=1)
                 sheet1.insert_row(row, index=2)
 
                 logger.info("DATA ADDED.")
@@ -76,15 +76,3 @@ def lambda_handler(event, context):
         raise e
         
     return response
-
-# def write_data_to_spread_sheet(user_id, feedback, polarity):
-#     row = [user_id, feedback, polarity]
-#     logger.info(row)
-
-#     gc = gspread.service_account(filename='credentials.json')
-#     logger.info(row)
-
-#     gsheet = gc.open('Customer_feedback_analytics')
-#     logger.info(row)
-
-#     gsheet.sheet1.insert_row(row, index=2)
